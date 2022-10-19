@@ -75,6 +75,34 @@ lpt$duals
 # Dual is the shadow prices of primal.
 
 
+# 3. Make an economic interpretation of the dual 
+# Warehouse-1 <= 622 + Plant-A
+# Warehouse-2 <= 614 + Plant-A
+# Warehouse-3 <= 630 + Plant-A
+# Warehouse-1 <= 641 + PlantB
+# Warehouse-2 <= 645 + PlantB
+# Warehouse-3 <= 649 + PlantB
 
-# The dual is shadow prices of primal. This signifies that there is no way to improve profit or lower cost by reallocating resources in this situation marginal revenue equals marginal cost.
+#We conclude that Warehouse-1 - Plant-A >= 622$$ that can be exponented as arehouse-1 <= 622 + Plant-A
+# Warehouse-1 is considered as the price payments being  received  at  the  origin  which  is  nothing  else, but  the  revenue, whereas Plant-A + 622  is  the  money  paid  at  the  origin  at  Plant-A 
+# Therefore  the  equation  turns,  out to be  MarketRevenue >= MarginalCost_1
+
+# For  a  profit  maximization,  The  Marginal  Revenue (MR) should be equal to Marginal Costs MR_1 = MC_1
+
+#Based  on above interpretation, we can conclude that, Profit maximization takes place  if MC is equal to MR.
+
+# If MR < MC, We must lower plant costs in order to reach the Marginal Revenue (MR)
+  
+#If MR > MC, We must boost manufacturing supply if we are to reach the Marginal Revenue (MR)
+ 
+ 4.# Conclusion from the primal
+# 60x12 which is 60 Units from Plant A to Warehouse 2.
+# 40x13 which is 40 Units from Plant A to Warehouse 3.
+# 80x21 which is 60 Units from Plant B to Warehouse 1.
+# 30x23 which is 60 Units from Plant B to Warehouse 3.
+# from the dual
+# So, MR=MC. Five of the six MR<=MC. The only equation that does not satisfy this requirement is Plant B to
+# Warehouse 2. 
+#The primal that we will not be shipping any AED device there
+
 ```
