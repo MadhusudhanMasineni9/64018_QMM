@@ -1,0 +1,80 @@
+---
+title: "Transportation"
+author: "Madhusudhan Masineni"
+date: "2022-10-19"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+
+
+```{r}
+library(lpSolve)
+```
+```{r}
+# Solve the transportation Problem in R and formulate it. 
+# use Dataframe 
+transport = matrix(c(22,14,30,600,100,
+               16,20,24,625,120,
+               80,60,70,"-","-"),ncol=5,byrow=TRUE)
+colnames(transport)=c("Warehouse-1","Warehouse-2","Warehouse-3","Production cost","Production capacity")
+rownames(transport)=c("Plant-A","Plant-B","Demand")
+transport
+
+```
+
+
+```{r }
+# THE Transportation model and the Objective Function solved below 
+# Minimization:: The combined cost of a production and shipping
+# Min TM = 22x11 + 14x12 + 30x13+ 16x21 + 20x22+ 24x23
+#  which is Subjected to supply constraints:
+# x11 + x12 + x13 <= 100 (Plant-A)
+# x21 + x22 + x23 >= 120 (Plant-B)
+# Demand Constraints 
+# x11 + x21 >= 80 (Warehouse-1)
+# x12 + x22 >= 60 (Warehouse-2)
+# x13 + x23 >= 70 (Warehouse-3)
+# Seems to be the transportation problem is unbalanced because demand < supply by 10.
+# Use dummy variable method column 4 with the transportation cost = 0 and demand = 10.
+
+# Transportation problem in R
+
+tp <- matrix(c(622,614,630,0,
+                  641,645,649,0), ncol = 4, byrow = TRUE)
+# Column names, row names 
+colnames(tp) <- c("Warehouse-1", "Warehouse-2", "Warehouse-3", "Dummy")
+row.names(tp) <- c("Plant-A", "PLant-B")
+tp <- as.table(tp)
+tp
+
+# Production Capacity set row :
+# supply end
+rowsign <- rep("<=", 2)
+rowrhs <- c(100,120)
+
+# demand end
+colsign <- rep(">=", 4)
+colrhs <- c(80,60,70,10)
+
+# LP Transport to find min.cost
+lpt <- lp.transport(tp, "min", rowsign, rowrhs, colsign, colrhs)
+
+# solution
+lpt$solution
+
+# objective function
+lpt$objval
+
+# Objective function is 132790
+# Plant A they should ship 40 to Warehouse 1 and 60 units to Warehouse 2,from Plant B they should ship 40 units to Warehouse 1 and 70 units to Warehouse 3,giving an overall total cost of $132,790.
+
+# The dual
+lpt$duals
+# Dual is the shadow prices of primal.
+
+
+
+# The dual is shadow prices of primal. This signifies that there is no way to improve profit or lower cost by reallocating resources in this situation marginal revenue equals marginal cost.
+```
