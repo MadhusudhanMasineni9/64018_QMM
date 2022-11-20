@@ -1,0 +1,72 @@
+---
+title: "IntegerProgram"
+author: "Madhusudhan Masineni"
+date: "2022-11-20"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+## Read Integer.lp from working directory
+
+```{r}
+library(lpSolveAPI)
+integer <- read.lp("IntegerProgram.lp")
+integer
+```
+
+## Solving the integer program by solve method and derive objective function
+
+```{r}
+solve(integer)
+get.objective(integer)
+get.variables(integer)
+```
+ #Objective result
+ 
+ The total cost is : $25,675
+
+## From above First execution of r block or from the constraints, we can conclude that ::
+
+The workers available on Sunday would be    = 18
+The workers available on Monday would be    = 27
+The workers available on Tuesday would be   = 22
+The workers available on Wednesday would be = 26
+The workers available on Thursday would be  = 25
+The workers available on Friday would be    = 21
+The workers available on Saturday would be  = 19
+
+# In R we can write 
+
+```{r}
+workers_days = matrix(c("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday",18,27,22,26,25,21,19),ncol = 2, byrow = F) 
+colnames(workers_days) = c("DayOfTheWeek","Workers")
+as.table(workers_days)
+```
+
+# Interpretation from 2nd block of r code
+x1 = 2  Workers Shift 1
+x2 = 4  Workers Shift 2
+x3 = 5  Workers Shift 3
+x4 = 0  Workers Shift 4
+x5 = 8  Workers Shift 5
+x6 = 1  Workers Shift 6
+x7 = 13 Workers Shift 7
+
+# The above equation in lp model 
+
+```{r}
+tb = matrix(c(0,4,5,0,8,1,0,0,0,5,0,8,1,13,2,0,0,0,8,1,13,2,4,0,0,8,1,13,2,4,5,0,0,1,13,2,3,4,0,0,0,13,2,4,5,0,8,0,0),ncol=7,byrow=TRUE)
+colnames(tb) = c("Shift_1", "Shift_2", "Shift_3", "Shift_4", "Shift_5", "Shift_6", "Shift_7")
+row.names(tb) = c('Sunday', 'Monday', 'Tuesday','Wednesday','Thursday','Friday','Saturday')
+tb
+```
+
+# No. of employees available on daily basis, we can conclude that the shift arrangement that reduces the overall wage cost.
+
+```{r}
+rowSums(tb)
+```
+
+## Feasible solution
+We'll need a total of 35 employees. We can quickly confirm the information above by examining shift 7 (employees off Saturday and Sunday). We only have 22 personnel to handle shift seven because 13 people are absent. Employees who work shifts 1, 2, 3, 4, and 5 will also work on Saturday. There would be 21 workers in this. We observe that Saturday requires a minimum of 19, thus 13 people on shift 7 and no one else working on this day are safe. If we apply same reasoning to the other days, we will discover that we have provided the bare minimum of personnel for each day.
